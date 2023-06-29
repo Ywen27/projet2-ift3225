@@ -3,7 +3,7 @@
 include("pwdDB.php");
 
 $db_user = "yinwen";
-$db_host = "mysql.iro.umontreal.ca";
+$db_host = "www-ens.iro.umontreal.ca";
 $db_name = "yinwen_projet2_ift3225";
 
 $conn = new mysqli($db_host, $db_user, $db_password, $db_name);
