@@ -51,5 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <button type="submit">Se connecter</button>
     </form>
+    <button onclick="location.href='register.php'">S'inscrire</button>
 </body>
 </html>
