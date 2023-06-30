@@ -1,4 +1,4 @@
-use yinwen_projet2_ift3225;
+USE yinwen_projet2_ift3225;
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
