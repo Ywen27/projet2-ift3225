@@ -6,8 +6,8 @@ include('connectionDB.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
-    $password = $_POST['password'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
 
     // Hachez le mot de passe
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -23,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Location: dashboard.php');
     exit;
 }
-
-// Affichez le formulaire d'inscription
 ?>
 
 <!DOCTYPE html>

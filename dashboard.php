@@ -2,7 +2,7 @@
 
 mysqli_close($conn) or die("Probleme lors de la fermeture de la connection ". msqli_error());
 
-echo "Hello!\n"
+echo "Test\n"
 
 ?>
 
