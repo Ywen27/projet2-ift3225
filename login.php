@@ -50,6 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <button type="submit">Se connecter</button>
     </form>
-    <button onclick="location.href='register.php'">S'inscrire</button>
+    <p>Si vous n'avez pas encore de compte, veuillez <a href="register.php">s'inscrire</a>.</p>
 </body>
 </html>

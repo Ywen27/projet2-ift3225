@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">S'inscrire</button>
     </form>
 
-    
-    <button onclick="location.href='login.php'">Se connecter</button>
+    <p>Si vous avez déjà un compte, veuillez <a href="register.php">se connecter</a>.</p>
 </body>
 </html>
