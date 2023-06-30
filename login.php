@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = $result->fetch_assoc();
 
     // Vérifiez si le mot de passe est correct
-    if (password_verify($password, $user['password'])) {
+    if ($user && password_verify($password, $user['password'])) {
         // Le mot de passe est correct, connectez l'utilisateur
         $_SESSION['user_id'] = $user['id'];
         header('Location: dashboard.php');
@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = 'Le nom d\'utilisateur ou le mot de passe est incorrect';
     }
 }
-
 
 ?>
 

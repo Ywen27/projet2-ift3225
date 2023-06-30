@@ -1,3 +1,4 @@
+use yinwen_projet2_ift3225;
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
@@ -77,7 +78,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `email` varchar(100) NOT NULL,
   `role` enum('admin','user') NOT NULL DEFAULT 'user',
   PRIMARY KEY (`user_id`)
@@ -87,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role`) VALUES
-(1, 'yassin', 'yass1234', 'yassin@gmail.com', 'admin');
+INSERT INTO `users` (`user_id`,`username`, `password`, `email`, `role`) VALUES
+(1,'yassin', '$2y$10$QCppJ6RTe6w6WnTrYHUb2uHxpwJGnWfgXDswTO4Ts6F60e.T/6X/u', 'yassin@gmail.com', 'admin');
 
 --
 -- Contraintes pour les tables déchargées
