@@ -9,19 +9,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Hachez le mot de passe
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Requête pour vérifier si le nom d'utilisateur existe déjà
+    $check_sql = "SELECT * FROM users WHERE username = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param('s', $username);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
 
-    // Requête pour insérer le nouvel utilisateur dans la base de données
-    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sss', $username, $email, $hashed_password);
-    $stmt->execute();
+    if ($check_result->num_rows > 0) {
+        // Le nom d'utilisateur existe déjà
+        $error = 'Ce nom d\'utilisateur existe déjà';
+    } else {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Connectez l'utilisateur
-    $_SESSION['user_id'] = $stmt->insert_id;
-    header('Location: dashboard.php');
-    exit;
+        // Requête pour insérer le nouvel utilisateur dans la base de données
+        $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('sss', $username, $email, $hashed_password);
+        $stmt->execute();
+
+        // Connectez l'utilisateur
+        $_SESSION['user_id'] = $stmt->insert_id;
+        header('Location: dashboard.php');
+        exit;
+    }
 }
 ?>
 
@@ -32,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <h1>Inscription</h1>
+
+    <?php if (isset($error)): ?>
+        <p><?php echo $error; ?></p>
+    <?php endif; ?>
 
     <form method="post" action="register.php">
         <label for="username">Nom d'utilisateur:</label>

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Vérifiez si le mot de passe est correct
     if ($user && password_verify($password, $user['password'])) {
         // Le mot de passe est correct, connectez l'utilisateur
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_id'] = $user['user_id'];
         header('Location: dashboard.php');
         exit;
     } else {
