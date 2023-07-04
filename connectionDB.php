@@ -7,7 +7,8 @@ $db_host = "www-ens.iro.umontreal.ca";
 $db_name = "yinwen_projet2_ift3225";
 
 $conn = new mysqli($db_host, $db_user, $db_password, $db_name);
-if ($conn->connect_error)
+if ($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);
+}
 
 ?>

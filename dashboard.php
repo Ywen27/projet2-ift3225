@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-echo $_SESSION['user_id'];
 session_destroy();
 ?>
 
@@ -33,9 +32,10 @@ session_destroy();
 
 <body>
   <div class="container">
-    <h3>Dashboard</h3>
+    <h3>Bienvenue <?php echo $_SESSION['username'];?>! Allons gérer vos tâches ensemble.</h3>
     <button type="button" class="btn btn-primary" onclick="">Créer une nouvelle tâche</button>
     <hr>
+    <h3>Dashboard</h3>
     <table class="table table-striped">
       <thead>
         <tr>

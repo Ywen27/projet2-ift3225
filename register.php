@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Connectez l'utilisateur
         $_SESSION['user_id'] = $stmt->insert_id;
+        $_SESSION['username'] = $username; 
         header('Location: dashboard.php');
         exit;
     }
