@@ -30,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Connectez l'utilisateur
         $_SESSION['user_id'] = $stmt->insert_id;
-        $_SESSION['username'] = $username; 
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = 'user';
         header('Location: dashboard.php');
         exit;
     }
@@ -82,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="register-form">
             <h1>Inscription</h1>
             <?php if (isset($error)): ?>
-            <p><?php echo $error; ?></p>
+            <p style="color: red;"><?php echo $error; ?></p>
             <?php endif; ?>
             <form method="post" action="register.php">
                 <div class="form-group">

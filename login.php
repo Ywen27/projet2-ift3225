@@ -5,12 +5,12 @@ session_start();
 include('connectionDB.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE username = ?";
+    $sql = "SELECT * FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $username);
+    $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Le mot de passe est correct, connectez l'utilisateur
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
         header('Location: dashboard.php');
         exit;
     } else {
@@ -75,12 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="login-form">
             <h1>Connexion</h1>
             <?php if (isset($error)): ?>
-            <p><?php echo $error; ?></p>
+            <p style="color: red;"><?php echo $error; ?></p>
             <?php endif; ?>
             <form method="post" action="login.php">
                 <div class="form-group">
-                    <label for="username">Nom d'utilisateur:</label>
-                    <input type="text" id="username" name="username" class="form-control" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe:</label>
