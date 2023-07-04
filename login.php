@@ -33,23 +33,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     <title>Connexion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .login-form {
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        button[type="submit"] {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        p {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Connexion</h1>
-
-    <?php if (isset($error)): ?>
-        <p><?php echo $error; ?></p>
-    <?php endif; ?>
-
-    <form method="post" action="login.php">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Mot de passe:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Se connecter</button>
-    </form>
-    <p>Si vous n'avez pas encore de compte, veuillez vous <a href="register.php">inscrire</a> d'abord.</p>
+    <div class="container">
+        <div class="login-form">
+            <h1>Connexion</h1>
+            <?php if (isset($error)): ?>
+            <p><?php echo $error; ?></p>
+            <?php endif; ?>
+            <form method="post" action="login.php">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur:</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe:</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </form>
+            <p>Si vous n'avez pas encore de compte, veuillez vous <a href="register.php">inscrire</a> d'abord.</p>
+        </div>
+    </div>
 </body>
 </html>
+
+
+
+<?php if (isset($error)): ?>
+        <p><?php echo $error; ?></p>
+    <?php endif; ?>
