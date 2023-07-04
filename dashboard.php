@@ -72,10 +72,6 @@ session_destroy();
                             <input type="date" class="form-control" id="task-start-date">
                         </div>
                         <div class="form-group">
-                            <label for="task-end-date" class="col-form-label">Date de fin:</label>
-                            <input type="date" class="form-control" id="task-end-date">
-                        </div>
-                        <div class="form-group">
                             <label for="task-category" class="col-form-label">Catégorie:</label>
                             <input type="text" class="form-control" id="task-category">
                         </div>
