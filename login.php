@@ -95,8 +95,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 </html>
 
-
-
-<?php if (isset($error)): ?>
-        <p><?php echo $error; ?></p>
-    <?php endif; ?>
