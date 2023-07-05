@@ -45,7 +45,9 @@ INSERT INTO `categories` (`categorie_id`, `name`) VALUES
 (3, 'comptabilité'),
 (4, 'multimédia'),
 (5, 'marketing'),
-(6, 'ressources humaines');
+(6, 'ressources humaines'),
+(7, 'autres');
+
 
 -- --------------------------------------------------------
 

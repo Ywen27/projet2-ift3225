@@ -1,4 +1,5 @@
-<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source']))
+    die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
@@ -8,6 +9,8 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
+
+$categories = $conn->query("SELECT * FROM categories");
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +37,9 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="container">
         <a href="logout.php" class="btn btn-danger float-right">Se déconnecter</a>
-        <h3>Bienvenue <?php echo $_SESSION['username'];?>! Allons gérer vos tâches ensemble.</h3>
+        <h3>Bienvenue
+            <?php echo $_SESSION['username']; ?>! Allons gérer vos tâches ensemble.
+        </h3>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">Créer une nouvelle
             tâche</button>
         <hr>
@@ -66,13 +71,12 @@ if (!isset($_SESSION['user_id'])) {
                         <td>
                             <select class="form-control" id="filter-category" name="filter-category">
                                 <option value=""></option>
-                                <option value="developpement">Développement</option>
-                                <option value="communication">Communication</option>
-                                <option value="comptabilite">Comptabilité</option>
-                                <option value="multimedia">Multimédia</option>
-                                <option value="marketing">Marketing</option>
-                                <option value="ressources-humaines">Ressources humaines</option>
-                                <option value="Autre">Autres</option>
+                                <?php
+                                while ($row = $categories->fetch_assoc()) {
+                                    echo '<option value="' . $row['categorie_id'] . '">' . $row['name'] . '</option>';
+                                }
+                                $categories->data_seek(0);
+                                ?>
                             </select>
                         </td>
                         <td>
@@ -117,7 +121,7 @@ if (!isset($_SESSION['user_id'])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="newTaskForm" method="post" action="">
+                        <form id="newTaskForm" method="post" action="createTask.php">
                             <div class="form-group">
                                 <label for="task-title" class="col-form-label">Titre:</label>
                                 <input type="text" class="form-control" id="task-title">
@@ -130,13 +134,12 @@ if (!isset($_SESSION['user_id'])) {
                                 <label for="task-category" class="col-form-label">Catégorie:</label>
                                 <select class="form-control" id="task-category">
                                     <option value=""></option>
-                                    <option value="developpement">Développement</option>
-                                    <option value="communication">Communication</option>
-                                    <option value="comptabilite">Comptabilité</option>
-                                    <option value="multimedia">Multimédia</option>
-                                    <option value="marketing">Marketing</option>
-                                    <option value="ressources-humaines">Ressources humaines</option>
-                                    <option value="Autre">Autre</option>
+                                    <?php
+                                    while ($row = $categories->fetch_assoc()) {
+                                        echo '<option value="' . $row['categorie_id'] . '">' . $row['name'] . '</option>';
+                                    }
+                                    $categories->data_seek(0);
+                                    ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -160,10 +163,84 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            fetchTasks();
+
             $('#createTaskBtn').click(function (e) {
                 e.preventDefault();
                 $('#newTaskForm').submit();
             });
+
+            $('#newTaskForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var title = $('#task-title').val();
+                var startDate = $('#task-start-date').val();
+                var category = $('#task-category').val();
+                var description = $('#task-description').val();
+
+                $.ajax({
+                    url: 'createTask.php',
+                    type: 'POST',
+                    data: {
+                        title: title,
+                        start_date: startDate,
+                        category: category,
+                        description: description
+                    },
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            // Clear the form
+                            $('#newTaskForm').trigger('reset');
+                            // Close the modal
+                            $('#newTaskModal').modal('hide');
+                            // Reload tasks
+                            fetchTasks();
+                        } else {
+                            // Handle error here
+                            console.log(response.message);
+                        }
+                    },
+                    error: function () {
+                        // Handle connection errors here
+                        console.log('Failed to connect to the server.');
+                    }
+                });
+            });
+
+            // Fetch tasks from the server
+            function fetchTasks() {
+                $.ajax({
+                    url: 'fetchAllTasks.php',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            var tasks = response.data;
+                            var tasksHtml = '';
+
+                            tasks.forEach(function (task) {
+                                tasksHtml += `
+                            <tr>
+                                <td>${task.nom_tache}</td>
+                                <td>${task.date_debut}</td>
+                                <td>${task.date_fin}</td>
+                                <td>${task.categorie_id}</td>
+                                <td>${task.description}</td>
+                                <td>${task.etat}</td>
+                                <td>
+                                
+                                </td>
+                            </tr>
+                        `;
+                            });
+
+                            $('#listeTaches').html(tasksHtml);
+                        } else {
+                            // Handle error here
+                            console.log(response.message);
+                        }
+                    },
+                });
+            }
         });
     </script>
 </body>
