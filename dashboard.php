@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id'])) {
             tâche</button>
         <hr>
         <h5>Voulez-vous filtrer vos tâches</h5>
-        <form id="filterForm">
+        <form id="filterForm" method="post" action="">
             <table class="table table-striped">
                 <thead>
                     <tr>
