@@ -1,5 +1,7 @@
 <?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
 session_start();
+
+include('connectionDB.php');
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // L'utilisateur est connecté, dirigez-le vers le tableau de bord
