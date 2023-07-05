@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +36,7 @@ session_destroy();
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">Créer une nouvelle
             tâche</button>
         <hr>
-        <h4>Voulez-vous filtrer vos tâches</h4>
+        <h5>Voulez-vous filtrer vos tâches</h5>
         <form id="filterForm">
             <table class="table table-striped">
                 <thead>
