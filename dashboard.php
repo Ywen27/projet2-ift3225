@@ -32,6 +32,7 @@ session_destroy();
 
 <body>
     <div class="container">
+        <a href="logout.php" class="btn btn-danger float-right">Se déconnecter</a>
         <h3>Bienvenue <?php echo $_SESSION['username'];?>! Allons gérer vos tâches ensemble.</h3>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">Créer une nouvelle
             tâche</button>
