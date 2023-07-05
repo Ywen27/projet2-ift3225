@@ -92,8 +92,8 @@ session_destroy();
             <thead>
                 <tr>
                     <th>Titre</th>
-                    <th>Date début</th>
-                    <th>Date fin</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
                     <th>Catégorie</th>
                     <th>Description</th>
                     <th>Actions</th>
