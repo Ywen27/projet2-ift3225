@@ -70,7 +70,7 @@ if (!isset($_SESSION['user_id'])) {
                                 <option value="multimedia">Multimédia</option>
                                 <option value="marketing">Marketing</option>
                                 <option value="ressources-humaines">Ressources humaines</option>
-                                <option value="Autre">Autre</option>
+                                <option value="Autre">Autres</option>
                             </select>
                         </td>
                         <td>
