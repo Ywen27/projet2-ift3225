@@ -48,11 +48,11 @@ $categories = $conn->query("SELECT * FROM categories");
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>par le titre?</th>
-                        <th>par la date de début?</th>
-                        <th>par la date de fin?</th>
-                        <th>par leur Catégorie?</th>
-                        <th>par leur état?</th>
+                        <th><label for="filter-title" class="col-form-label">par le titre?</label></th>
+                        <th><label for="filter-start-date" class="col-form-label">par la date de début?</label></th>
+                        <th><label for="filter-end-date" class="col-form-label">par la date de fin?</label></th>
+                        <th><label for="filter-category" class="col-form-label">par leur Catégorie?</label></th>
+                        <th><label for="filter-state" class="col-form-label">par leur état?</label></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -124,15 +124,15 @@ $categories = $conn->query("SELECT * FROM categories");
                         <form id="newTaskForm" method="post" action="createTask.php">
                             <div class="form-group">
                                 <label for="task-title" class="col-form-label">Titre:</label>
-                                <input type="text" class="form-control" id="task-title">
+                                <input type="text" class="form-control" id="task-title" name="task-title">
                             </div>
                             <div class="form-group">
                                 <label for="task-start-date" class="col-form-label">Date de début:</label>
-                                <input type="date" class="form-control" id="task-start-date">
+                                <input type="date" class="form-control" id="task-start-date" name="task-start-date">
                             </div>
                             <div class="form-group">
                                 <label for="task-category" class="col-form-label">Catégorie:</label>
-                                <select class="form-control" id="task-category">
+                                <select class="form-control" id="task-category" name="task-category">
                                     <option value=""></option>
                                     <?php
                                     while ($row = $categories->fetch_assoc()) {
@@ -144,7 +144,7 @@ $categories = $conn->query("SELECT * FROM categories");
                             </div>
                             <div class="form-group">
                                 <label for="task-description" class="col-form-label">Description:</label>
-                                <textarea class="form-control" id="task-description"></textarea>
+                                <textarea class="form-control" id="task-description" name="task-category"></textarea>
                             </div>
                         </form>
                     </div>
@@ -157,10 +157,9 @@ $categories = $conn->query("SELECT * FROM categories");
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             fetchTasks();
@@ -182,27 +181,17 @@ $categories = $conn->query("SELECT * FROM categories");
                     url: 'createTask.php',
                     type: 'POST',
                     data: {
-                        title: title,
-                        start_date: startDate,
-                        category: category,
-                        description: description
+                        'task-title': title,
+                        'task-start-date': startDate,
+                        'task-category': category,
+                        'task-description': description
                     },
                     success: function (response) {
-                        if (response.status == 'success') {
-                            // Clear the form
+                        if (response.success == true) {
                             $('#newTaskForm').trigger('reset');
-                            // Close the modal
                             $('#newTaskModal').modal('hide');
-                            // Reload tasks
                             fetchTasks();
-                        } else {
-                            // Handle error here
-                            console.log(response.message);
                         }
-                    },
-                    error: function () {
-                        // Handle connection errors here
-                        console.log('Failed to connect to the server.');
                     }
                 });
             });
@@ -213,8 +202,8 @@ $categories = $conn->query("SELECT * FROM categories");
                     url: 'fetchAllTasks.php',
                     type: 'GET',
                     success: function (response) {
-                        if (response.status == 'success') {
-                            var tasks = response.data;
+                        if (response.success == true) {
+                            var tasks = response.tasks;
                             var tasksHtml = '';
 
                             tasks.forEach(function (task) {
@@ -227,18 +216,14 @@ $categories = $conn->query("SELECT * FROM categories");
                                 <td>${task.description}</td>
                                 <td>${task.etat}</td>
                                 <td>
-                                
                                 </td>
                             </tr>
                         `;
                             });
 
                             $('#listeTaches').html(tasksHtml);
-                        } else {
-                            // Handle error here
-                            console.log(response.message);
                         }
-                    },
+                    }
                 });
             }
         });

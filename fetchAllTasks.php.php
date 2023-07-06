@@ -16,4 +16,6 @@ if (isset($_SESSION['user_id'])) {
         $response["success"] = true;
     }
 }
+
+echo json_encode($response);
 ?>

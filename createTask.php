@@ -15,4 +15,6 @@ if (isset($_SESSION['user_id'], $_POST['task-title'], $_POST['task-start-date'],
     }
 }
 
+echo json_encode($response);
+
 ?>
