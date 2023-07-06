@@ -108,6 +108,7 @@ $categories = $conn->query("SELECT * FROM categories");
             <tbody id="listeTaches">
             </tbody>
         </table>
+        <p id="noTasks" class="text-center" style="color: grey;"></p>
 
         <!--Formulaire pour créer une nouvelle tâche-->
         <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="newTaskModalLabel"
@@ -191,6 +192,8 @@ $categories = $conn->query("SELECT * FROM categories");
                             $('#newTaskForm').trigger('reset');
                             $('#newTaskModal').modal('hide');
                             fetchTasks();
+                        }else{
+                            console.log("create task failed");
                         }
                     }
                 });
@@ -216,11 +219,17 @@ $categories = $conn->query("SELECT * FROM categories");
                                 <td>${task.description}</td>
                                 <td>
                                 </td>
-                            </tr>
-                        `;
+                            </tr>`;
                             });
 
                             $('#listeTaches').html(tasksHtml);
+                            if (tasks.length == 0) {
+                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment."); 
+                            } else {
+                                $('#noTasks').text("");
+                            }
+                        }else{
+                            console.log("fetch tasks failed");
                         }
                     }
                 });
