@@ -21,6 +21,7 @@ $categories = $conn->query("SELECT * FROM categories");
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .container {
+            max-width: 90%;
             margin-top: 50px;
         }
 
@@ -143,7 +144,7 @@ $categories = $conn->query("SELECT * FROM categories");
                             </div>
                             <div class="form-group">
                                 <label for="task-description" class="col-form-label">Description:</label>
-                                <textarea class="form-control" id="task-description" name="task-category"></textarea>
+                                <textarea class="form-control" id="task-description" name="task-description"></textarea>
                             </div>
                         </form>
                     </div>
