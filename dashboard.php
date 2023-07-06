@@ -125,11 +125,11 @@ $categories = $conn->query("SELECT * FROM categories");
                         <form id="newTaskForm" method="post" action="createTask.php">
                             <div class="form-group">
                                 <label for="task-title" class="col-form-label">Titre:</label>
-                                <input type="text" class="form-control" id="task-title" name="task-title">
+                                <input type="text" class="form-control" id="task-title" name="task-title" required>
                             </div>
                             <div class="form-group">
                                 <label for="task-start-date" class="col-form-label">Date de début:</label>
-                                <input type="date" class="form-control" id="task-start-date" name="task-start-date">
+                                <input type="date" class="form-control" id="task-start-date" name="task-start-date" required>
                             </div>
                             <div class="form-group">
                                 <label for="task-category" class="col-form-label">Catégorie:</label>
