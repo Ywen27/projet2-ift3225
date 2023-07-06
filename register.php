@@ -10,15 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     // Requête pour vérifier si le nom d'utilisateur existe déjà
-    $check_sql = "SELECT * FROM users WHERE username = ?";
+    $check_sql = "SELECT * FROM users WHERE email = ?";
     $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param('s', $username);
+    $check_stmt->bind_param('s', $email);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
 
     if ($check_result->num_rows > 0) {
-        // Le nom d'utilisateur existe déjà
-        $error = 'Ce nom d\'utilisateur existe déjà';
+        // L'email existe déjà
+        $error = 'Cet email est déjà associé à un compte';
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
