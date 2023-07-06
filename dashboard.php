@@ -1,5 +1,4 @@
-<?php if (isset($_GET['source']))
-    die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
