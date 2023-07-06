@@ -38,7 +38,9 @@ $categories = $conn->query("SELECT * FROM categories");
     <div class="container">
         <a href="logout.php" class="btn btn-danger float-right">Se déconnecter</a>
         <h3>Bienvenue
-            <?php echo $_SESSION['username']; ?>! Allons gérer vos tâches ensemble.
+            <span style="font-style: oblique; color: #1E90FF;">
+                <?php echo $_SESSION['username']; ?>
+            </span>! Allons gérer vos tâches ensemble.
         </h3>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">Créer une nouvelle
             tâche</button>
@@ -197,7 +199,7 @@ $categories = $conn->query("SELECT * FROM categories");
                             $('#newTaskForm').trigger('reset');
                             $('#newTaskModal').modal('hide');
                             fetchTasks();
-                        }else{
+                        } else {
                             console.log("create task failed");
                         }
                     }
@@ -229,11 +231,11 @@ $categories = $conn->query("SELECT * FROM categories");
 
                             $('#listeTaches').html(tasksHtml);
                             if (tasks.length == 0) {
-                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment."); 
+                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment.");
                             } else {
                                 $('#noTasks').text("");
                             }
-                        }else{
+                        } else {
                             console.log("fetch tasks failed");
                         }
                     }
