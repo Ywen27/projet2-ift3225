@@ -213,7 +213,6 @@ $categories = $conn->query("SELECT * FROM categories");
                                 <td>${task.date_fin}</td>
                                 <td>${task.categorie_id}</td>
                                 <td>${task.description}</td>
-                                <td>${task.etat}</td>
                                 <td>
                                 </td>
                             </tr>
