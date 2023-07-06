@@ -150,6 +150,7 @@ $categories = $conn->query("SELECT * FROM categories");
                                 <textarea class="form-control" id="task-description" name="task-description"></textarea>
                             </div>
                         </form>
+                        <p style="color: grey;">Tous les champs avec * sont obligatoires</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -189,10 +190,10 @@ $categories = $conn->query("SELECT * FROM categories");
                     url: 'createTask.php',
                     type: 'POST',
                     data: {
-                        'task-title': title,
-                        'task-start-date': startDate,
-                        'task-category': category,
-                        'task-description': description
+                        taskTitle: title,
+                        taskStartDate: startDate,
+                        taskCategory: category,
+                        taskDescription: description
                     },
                     success: function (response) {
                         if (response.success == true) {
@@ -200,7 +201,7 @@ $categories = $conn->query("SELECT * FROM categories");
                             $('#newTaskModal').modal('hide');
                             fetchTasks();
                         } else {
-                            console.log("create task failed");
+                            console.log("create task failed, " + response.message);
                         }
                     }
                 });
@@ -236,7 +237,7 @@ $categories = $conn->query("SELECT * FROM categories");
                                 $('#noTasks').text("");
                             }
                         } else {
-                            console.log("fetch tasks failed");
+                            console.log("fetch tasks failed, " + response.message);
                         }
                     }
                 });
