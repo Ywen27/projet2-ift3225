@@ -94,7 +94,10 @@ $categories->data_seek(0);
                 </tbody>
             </table>
         </form>
-        <h3>Dashboard:</h3>
+        <div class="d-flex justify-content-between align-items-center">
+            <h3>Dashboard</h3>
+            <button id="resetFilter" class="btn btn-secondary" style="display: none;">Toutes les tâches</button>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -170,6 +173,12 @@ $categories->data_seek(0);
             $('#createTaskBtn').click(function (e) {
                 e.preventDefault();
                 $('#newTaskForm').submit();
+            });
+
+            $('#resetFilter').on('click', function () {
+                $(this).hide(); // cache le bouton
+                fetchTasks(); // rappelle la fonction fetchTasks pour afficher toutes les tâches
+                $('#filterForm').trigger('reset');
             });
 
             $('#newTaskForm').on('submit', function (e) {
@@ -323,6 +332,7 @@ $categories->data_seek(0);
                             } else {
                                 $('#noTasks').text("");
                             }
+                            $('#resetFilter').show(); // affiche le bouton Retour
                         } else {
                             console.log("filter tasks failed, " + response.message);
                         }
