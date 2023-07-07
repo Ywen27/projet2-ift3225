@@ -7,7 +7,7 @@ if (isset($_SESSION['user_id'], $_POST['$taskId']) ) {
     $taskId = $_POST['taskId'];
 
     // Préparez la requête SQL pour supprimer la tâche
-    $stmt = $conn->prepare("DELETE FROM tasks WHERE task_id = ?");
+    $stmt = $conn->prepare("DELETE FROM taches WHERE tache_id = ?");
     
     // Lier les paramètres et exécuter la requête
     $stmt->bind_param('i', $taskId);
