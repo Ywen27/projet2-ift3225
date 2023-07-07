@@ -248,7 +248,7 @@ $categories->data_seek(0);
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-primary ">Modifier</button>
-                                    <button type="button" class="btn btn-danger" id="delete-task" data-task-id="${task.id}">Supprimer</button>
+                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}">Supprimer</button>
                                     <button type="button" class="btn btn-success">Terminer</button>
                                 </td>
                             </tr>`;
@@ -339,7 +339,7 @@ $categories->data_seek(0);
                 });
             });
 
-            $('#delete-task').on('click', function () {
+            $(document).on('click', '.delete-task', function () {
                 var taskId = $(this).data('task-id');
 
                 if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
