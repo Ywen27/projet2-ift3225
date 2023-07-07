@@ -1,4 +1,5 @@
-<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source']))
+    die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
@@ -10,6 +11,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $categories = $conn->query("SELECT * FROM categories");
+$categoryNames = array();
+while ($row = $categories->fetch_assoc()) {
+    $categoryNames[$row['categorie_id']] = $row['name'];
+}
+$categories->data_seek(0);
 ?>
 
 <!DOCTYPE html>
@@ -134,7 +140,7 @@ $categories = $conn->query("SELECT * FROM categories");
                                 <input type="date" class="form-control" id="task-start-date" name="task-start-date">
                             </div>
                             <div class="form-group">
-                                <label for="task-category" class="col-form-label">Catégorie:</label>
+                                <label for="task-category" class="col-form-label">Catégorie*:</label>
                                 <select class="form-control" id="task-category" name="task-category">
                                     <option value=""></option>
                                     <?php
@@ -181,7 +187,7 @@ $categories = $conn->query("SELECT * FROM categories");
                 var category = $('#task-category').val();
                 var description = $('#task-description').val();
 
-                if (!title || !startDate) {
+                if (!title || !startDate || !category) {
                     alert('Tous les champs avec * sont obligatoire');
                     return;
                 }
@@ -195,6 +201,7 @@ $categories = $conn->query("SELECT * FROM categories");
                         taskCategory: category,
                         taskDescription: description
                     },
+                    dataType: "json",
                     success: function (response) {
                         if (response.success == true) {
                             $('#newTaskForm').trigger('reset');
@@ -207,25 +214,31 @@ $categories = $conn->query("SELECT * FROM categories");
                 });
             });
 
+            var categoryNames = <?php echo json_encode($categoryNames); ?>;
             // Fetch tasks from the server
             function fetchTasks() {
                 $.ajax({
                     url: 'fetchAllTasks.php',
                     type: 'GET',
+                    dataType: "json",
                     success: function (response) {
                         if (response.success == true) {
                             var tasks = response.tasks;
                             var tasksHtml = '';
 
                             tasks.forEach(function (task) {
+                                var categoryName = categoryNames[task.categorie_id];
                                 tasksHtml += `
                             <tr>
                                 <td>${task.nom_tache}</td>
                                 <td>${task.date_debut}</td>
-                                <td>${task.date_fin}</td>
-                                <td>${task.categorie_id}</td>
-                                <td>${task.description}</td>
+                                <td>${task.date_fin ? task.date_fin : '-'}</td>
+                                <td>${categoryName}</td>
+                                <td>${task.description ? task.description : '-'}</td>
                                 <td>
+                                    <button type="button" class="btn btn-primary">Modifier</button>
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                    <button type="button" class="btn btn-success">Terminer</button>
                                 </td>
                             </tr>`;
                             });

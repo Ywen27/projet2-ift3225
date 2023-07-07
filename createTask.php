@@ -2,7 +2,7 @@
 session_start();
 include('connectionDB.php');
 
-$response = array("success" => false, "message" => "");
+$response = array("success" => false, "message" => "No error");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_SESSION['user_id'], $_POST['taskTitle'], $_POST['taskStartDate'], $_POST['taskCategory'], $_POST['taskDescription'])) {
