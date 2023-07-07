@@ -39,6 +39,7 @@ $categories->data_seek(0);
                 <?php echo $_SESSION['username']; ?>
             </span>! Allons gérer vos tâches ensemble.
         </h3>
+        <br>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">Créer une nouvelle
             tâche</button>
         <hr>
@@ -248,7 +249,9 @@ $categories->data_seek(0);
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-primary ">Modifier</button>
-                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}">Supprimer</button>
+                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
+                                        Supprimer
+                                    </button>
                                     <button type="button" class="btn btn-success">Terminer</button>
                                 </td>
                             </tr>`;
@@ -318,8 +321,10 @@ $categories->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary">Modifier</button>
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                    <button type="button" class="btn btn-primary ">Modifier</button>
+                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
+                                        Supprimer
+                                    </button>
                                     <button type="button" class="btn btn-success">Terminer</button>
                                 </td>
                             </tr>`;
@@ -341,8 +346,9 @@ $categories->data_seek(0);
 
             $(document).on('click', '.delete-task', function () {
                 var taskId = $(this).data('task-id');
+                var taskName = $(this).data('task-name');
 
-                if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
+                if (confirm('Êtes-vous sûr de vouloir supprimer la tâche "'+ taskName +'" ?')) {
                     $.ajax({
                         url: 'deleteTask.php',
                         type: 'POST',
