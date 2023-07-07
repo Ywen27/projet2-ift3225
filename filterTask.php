@@ -19,10 +19,10 @@ if (isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_
         $sql .= " AND nom_tache LIKE '%$title%'";
     }
     if ($startDate != '') {
-        $sql .= " AND date_debut >= '$startDate'";
+        $sql .= " AND date_debut = '$startDate'";
     }
     if ($endDate != '') {
-        $sql .= " AND date_fin <= '$endDate'";
+        $sql .= " AND date_fin = '$endDate'";
     }
     if ($category != '') {
         $sql .= " AND categorie_id = $category";
