@@ -258,6 +258,63 @@ $categories->data_seek(0);
                     }
                 });
             }
+
+
+            $('#filterForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var filterTitle = $('#filter-title').val();
+                var filterStartDate = $('#filter-start-date').val();
+                var filterEndDate = $('#filter-end-date').val();
+                var filterCategory = $('#filter-category').val();
+                var filterState = $('#filter-state').val();
+
+                $.ajax({
+                    url: 'fetchFilteredTasks.php',
+                    type: 'POST',
+                    data: {
+                        filterTitle: filterTitle,
+                        filterStartDate: filterStartDate,
+                        filterEndDate: filterEndDate,
+                        filterCategory: filterCategory,
+                        filterState: filterState
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success == true) {
+                            var tasks = response.tasks;
+                            var tasksHtml = '';
+
+                            tasks.forEach(function (task) {
+                                var categoryName = categoryNames[task.categorie_id];
+                                tasksHtml += `
+                            <tr>
+                                <td>${task.nom_tache}</td>
+                                <td>${task.date_debut}</td>
+                                <td>${task.date_fin ? task.date_fin : '-'}</td>
+                                <td>${categoryName}</td>
+                                <td>${task.description ? task.description : '-'}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">Modifier</button>
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                    <button type="button" class="btn btn-success">Terminer</button>
+                                </td>
+                            </tr>`;
+                            });
+
+                            $('#listeTaches').html(tasksHtml);
+                            if (tasks.length == 0) {
+                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment.");
+                            } else {
+                                $('#noTasks').text("");
+                            }
+                        } else {
+                            console.log("fetch tasks failed, " + response.message);
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 </body>
