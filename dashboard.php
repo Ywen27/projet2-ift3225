@@ -3,9 +3,7 @@
 session_start();
 
 include('connectionDB.php');
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    // L'utilisateur est connecté, dirigez-le vers le tableau de bord
     header('Location: login.php');
     exit;
 }
@@ -96,7 +94,7 @@ $categories->data_seek(0);
         </form>
         <div class="d-flex justify-content-between align-items-center">
             <h3>Dashboard</h3>
-            <button id="resetFilter" class="btn btn-secondary" style="display: none;">Toutes les tâches</button>
+            <button id="resetFilter" class="btn btn-primary" style="display: none;">Revoir toutes les tâches</button>
         </div>
         <table class="table table-striped">
             <thead>
@@ -176,8 +174,8 @@ $categories->data_seek(0);
             });
 
             $('#resetFilter').on('click', function () {
-                $(this).hide(); // cache le bouton
-                fetchTasks(); // rappelle la fonction fetchTasks pour afficher toutes les tâches
+                $(this).hide();
+                fetchTasks();
                 $('#filterForm').trigger('reset');
             });
 
@@ -257,7 +255,7 @@ $categories->data_seek(0);
 
                             $('#listeTaches').html(tasksHtml);
                             if (tasks.length == 0) {
-                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment.");
+                                $('#noTasks').text("Vous avez aucune tâche pour l'instant.");
                             } else {
                                 $('#noTasks').text("");
                             }
@@ -332,7 +330,7 @@ $categories->data_seek(0);
                             } else {
                                 $('#noTasks').text("");
                             }
-                            $('#resetFilter').show(); // affiche le bouton Retour
+                            $('#resetFilter').show();
                         } else {
                             console.log("filter tasks failed, " + response.message);
                         }
