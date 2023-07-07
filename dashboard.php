@@ -269,8 +269,13 @@ $categories->data_seek(0);
                 var filterCategory = $('#filter-category').val();
                 var filterState = $('#filter-state').val();
 
+                if (!filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
+                    alert('Veuillez remplir au moins un champ pour le filtrage!');
+                    return;
+                }
+
                 $.ajax({
-                    url: 'fetchFilteredTasks.php',
+                    url: 'filterTask.php',
                     type: 'POST',
                     data: {
                         filterTitle: filterTitle,
@@ -288,12 +293,22 @@ $categories->data_seek(0);
                             tasks.forEach(function (task) {
                                 var categoryName = categoryNames[task.categorie_id];
                                 tasksHtml += `
-                            <tr>
-                                <td>${task.nom_tache}</td>
-                                <td>${task.date_debut}</td>
-                                <td>${task.date_fin ? task.date_fin : '-'}</td>
-                                <td>${categoryName}</td>
-                                <td>${task.description ? task.description : '-'}</td>
+                                <tr>
+                                <td style="word-wrap: break-word; max-width: 150px;">
+                                    ${task.nom_tache}
+                                </td>
+                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                    ${task.date_debut}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 100px;">
+                                    ${task.date_fin ? task.date_fin : '-'}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 150px;">
+                                    ${categoryName}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 300px;">
+                                    ${task.description ? task.description : '-'}
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-primary">Modifier</button>
                                     <button type="button" class="btn btn-danger">Supprimer</button>
@@ -304,12 +319,12 @@ $categories->data_seek(0);
 
                             $('#listeTaches').html(tasksHtml);
                             if (tasks.length == 0) {
-                                $('#noTasks').text("Aucune tâche n'est disponible pour le moment.");
+                                $('#noTasks').text("Aucune tâche ne correspond à la recherche");
                             } else {
                                 $('#noTasks').text("");
                             }
                         } else {
-                            console.log("fetch tasks failed, " + response.message);
+                            console.log("filter tasks failed, " + response.message);
                         }
                     }
                 });

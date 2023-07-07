@@ -1,10 +1,9 @@
 <?php
+session_start();
 include('connectionDB.php');
 
-// Initialiser une réponse
-$response = array('success' => false);
+$response = array('success' => false, "message" => "", "tasks" => array());
 
-// Vérifiez si les données ont été envoyées
 if (isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_POST['filterEndDate']) || isset($_POST['filterCategory']) || isset($_POST['filterState'])) {
     $title = isset($_POST['filterTitle']) ? $_POST['filterTitle'] : '';
     $startDate = isset($_POST['filterStartDate']) ? $_POST['filterStartDate'] : '';
@@ -12,7 +11,6 @@ if (isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_
     $category = isset($_POST['filterCategory']) ? $_POST['filterCategory'] : '';
     $state = isset($_POST['filterState']) ? $_POST['filterState'] : '';
 
-    // Construisez la requête SQL avec les paramètres
     $sql = "SELECT * FROM taches WHERE user_id = {$_SESSION['user_id']}";
 
     if ($title != '') {
@@ -41,6 +39,7 @@ if (isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_
         }
         $response['success'] = true;
     } else {
+        $response['success'] = true;
         $response['message'] = "No tasks found.";
     }
 } else {
