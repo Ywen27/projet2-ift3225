@@ -30,13 +30,6 @@ $categories->data_seek(0);
             max-width: 90%;
             margin-top: 50px;
         }
-
-        .truncate {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
     </style>
 </head>
 
@@ -230,11 +223,21 @@ $categories->data_seek(0);
                                 var categoryName = categoryNames[task.categorie_id];
                                 tasksHtml += `
                             <tr>
-                                <td>${task.nom_tache}</td>
-                                <td>${task.date_debut}</td>
-                                <td>${task.date_fin ? task.date_fin : '-'}</td>
-                                <td>${categoryName}</td>
-                                <td>${task.description ? task.description : '-'}</td>
+                                <td style="word-wrap: break-word; max-width: 150px;">
+                                    ${task.nom_tache}
+                                </td>
+                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                    ${task.date_debut}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 100px;">
+                                    ${task.date_fin ? task.date_fin : '-'}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 150px;">
+                                    ${categoryName}
+                                </td>
+                                <td style="word-wrap: break-word; max-width: 300px;">
+                                    ${task.description ? task.description : '-'}
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-primary">Modifier</button>
                                     <button type="button" class="btn btn-danger">Supprimer</button>
