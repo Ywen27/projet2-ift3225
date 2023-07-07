@@ -247,8 +247,8 @@ $categories->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary">Modifier</button>
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                    <button type="button" class="btn btn-primary ">Modifier</button>
+                                    <button type="button" class="btn btn-danger" id="delete-task" data-task-id="${task.id}">Supprimer</button>
                                     <button type="button" class="btn btn-success">Terminer</button>
                                 </td>
                             </tr>`;
@@ -337,6 +337,28 @@ $categories->data_seek(0);
                         }
                     }
                 });
+            });
+
+            $('#delete-task').on('click', function () {
+                var taskId = $(this).data('task-id');
+
+                if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
+                    $.ajax({
+                        url: 'deleteTask.php',
+                        type: 'POST',
+                        data: {
+                            taskId: taskId
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.success == true) {
+                                fetchTasks();
+                            } else {
+                                console.log("Delete task failed, " + response.message);
+                            }
+                        }
+                    });
+                }
             });
 
         });
