@@ -207,6 +207,7 @@ $categories->data_seek(0);
                             $('#newTaskForm').trigger('reset');
                             $('#newTaskModal').modal('hide');
                             fetchTasks();
+                            alert('Création de la tâche "' + title + '" est réussite!');
                         } else {
                             console.log("create task failed, " + response.message);
                         }
