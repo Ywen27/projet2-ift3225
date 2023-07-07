@@ -321,8 +321,13 @@ $categories->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary ">Modifier</button>
-                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
+                                    <button type="button" class="btn btn-primary modify-task" data-task-id="${task.tache_id}" 
+                                    data-task-name="${task.nom_tache}" data-start-time="${task.date_debut}" data-category="${task.categorie_id}" 
+                                    data-description="${task.description}">
+                                        Modifier
+                                    </button>
+                                    <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" 
+                                    data-task-name="${task.nom_tache}">
                                         Supprimer
                                     </button>
                                     <button type="button" class="btn btn-success">Terminer</button>
