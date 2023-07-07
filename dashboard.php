@@ -35,7 +35,7 @@ $categories->data_seek(0);
     <div class="container">
         <a href="logout.php" class="btn btn-danger float-right">Se déconnecter</a>
         <h3>Bienvenue
-            <span style="font-style: oblique; color: #1E90FF;">
+            <span style="color: #1E90FF;">
                 <?php echo $_SESSION['username']; ?>
             </span>! Allons gérer vos tâches ensemble.
         </h3>
