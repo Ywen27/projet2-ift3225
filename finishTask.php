@@ -6,14 +6,14 @@ $response = array('success' => false, "message" => "");
 if (!isset($_SESSION['user_id'], $_POST['$taskId']) ) {
     $taskId = $_POST['taskId'];
 
-    $stmt = $conn->prepare("UPDATE taches SET etat = 'complete' WHERE tache_id = ?");
+    $stmt = $conn->prepare("UPDATE taches SET etat = 'complete', date_fin = CURDATE() WHERE tache_id = ?");
     
     $stmt->bind_param('i', $taskId);
     $result = $stmt->execute();
 
     if ($result) {
         $response["success"] = true;
-        $response["message"] = "Task deleted successfully";
+        $response["message"] = "Task finished successfully";
     } else {
         $response["message"] = "Error: " . $stmt->error;
     }
