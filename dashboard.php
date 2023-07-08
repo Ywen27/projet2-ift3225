@@ -304,6 +304,7 @@ $categories->data_seek(0);
 
                             tasks.forEach(function (task) {
                                 var categoryName = categoryNames[task.categorie_id];
+                                var finishButtonHtml = task.etat === 'complete' ? '' : `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">Terminer</button>`;
                                 tasksHtml += `
                                 <tr>
                                 <td style="word-wrap: break-word; max-width: 150px;">
@@ -326,9 +327,7 @@ $categories->data_seek(0);
                                     <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
                                         Supprimer
                                     </button>
-                                    <button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
-                                        Terminer
-                                    </button>
+                                    ${finishButtonHtml}
                                 </td>
                             </tr>`;
                             });
