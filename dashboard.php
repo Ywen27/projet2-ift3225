@@ -1,5 +1,4 @@
-<?php if (isset($_GET['source']))
-    die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
@@ -12,6 +11,11 @@ $categories = $conn->query("SELECT * FROM categories");
 $categoryNames = array();
 while ($row = $categories->fetch_assoc()) {
     $categoryNames[$row['categorie_id']] = $row['name'];
+}
+$categories->data_seek(0);
+$categoryIds = array();
+while ($row = $categories->fetch_assoc()) {
+    $categoryIds[$row['name']] = $row['categorie_id'];
 }
 $categories->data_seek(0);
 ?>
@@ -160,6 +164,56 @@ $categories->data_seek(0);
                 </div>
             </div>
         </div>
+
+        <!--Formulaire pour modifier une tâche-->
+        <div class="modal fade" id="modifyTaskModal" tabindex="-1" role="dialog" aria-labelledby="modifyTaskModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newTaskModalLabel">Modifier la tâche</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modifyTaskForm" method="post" action="modifyTask.php">
+                            <div class="form-group">
+                                <label for="modify-task-title" class="col-form-label">Titre*:</label>
+                                <input type="text" class="form-control" id="modify-task-title" name="modify-task-title">
+                            </div>
+                            <div class="form-group">
+                                <label for="modify-task-start-date" class="col-form-label">Date de début*:</label>
+                                <input type="date" class="form-control" id="modify-task-start-date"
+                                    name="modify-task-start-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="modify-task-category" class="col-form-label">Catégorie*:</label>
+                                <select class="form-control" id="modify-task-category" name="modify-task-category">
+                                    <option value=""></option>
+                                    <?php
+                                    while ($row = $categories->fetch_assoc()) {
+                                        echo '<option value="' . $row['categorie_id'] . '">' . $row['name'] . '</option>';
+                                    }
+                                    $categories->data_seek(0);
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="modify-task-description" class="col-form-label">Description:</label>
+                                <textarea class="form-control" id="modify-task-description"
+                                    name="modify-task-description"></textarea>
+                            </div>
+                        </form>
+                        <p style="color: grey;">Tous les champs avec * sont obligatoires</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="modifyTaskBtn">Modifier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -230,8 +284,10 @@ $categories->data_seek(0);
 
                             tasks.forEach(function (task) {
                                 var categoryName = categoryNames[task.categorie_id];
-                                var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` : 
-                                `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">Terminer</button>`;
+                                var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` :
+                                    `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
+                                    Terminer
+                                </button>`;
                                 tasksHtml += `
                             <tr>
                                 <td style="word-wrap: break-word; max-width: 150px;">
@@ -250,7 +306,9 @@ $categories->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary ">Modifier</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyTaskModal">
+                                        Modifier
+                                    </button>
                                     <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
                                         Supprimer
                                     </button>
@@ -305,8 +363,10 @@ $categories->data_seek(0);
 
                             tasks.forEach(function (task) {
                                 var categoryName = categoryNames[task.categorie_id];
-                                var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` : 
-                                `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">Terminer</button>`;
+                                var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` :
+                                    `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
+                                    Terminer
+                                </button>`;
                                 tasksHtml += `
                                 <tr>
                                 <td style="word-wrap: break-word; max-width: 150px;">
@@ -325,7 +385,9 @@ $categories->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary ">Modifier</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">
+                                        Modifier
+                                    </button>
                                     <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
                                         Supprimer
                                     </button>
@@ -352,7 +414,7 @@ $categories->data_seek(0);
                 var taskId = $(this).data('task-id');
                 var taskName = $(this).data('task-name');
 
-                if (confirm('Êtes-vous sûr de vouloir supprimer la tâche "'+ taskName +'" ?')) {
+                if (confirm('Êtes-vous sûr de vouloir supprimer la tâche "' + taskName + '" ?')) {
                     $.ajax({
                         url: 'deleteTask.php',
                         type: 'POST',
@@ -375,7 +437,7 @@ $categories->data_seek(0);
                 var taskId = $(this).data('task-id');
                 var taskName = $(this).data('task-name');
 
-                if (confirm('Êtes-vous sûr de finir la tâche "'+ taskName +'" ?')) {
+                if (confirm('Êtes-vous sûr de finir la tâche "' + taskName + '" ?')) {
                     $.ajax({
                         url: 'finishTask.php',
                         type: 'POST',
@@ -394,6 +456,57 @@ $categories->data_seek(0);
                 }
             });
 
+            var categoryIds = <?php echo json_encode($categoryIds); ?>;
+            $(document).on('click', '.btn-primary[data-target="#modifyTaskModal"]', function () {
+                var taskId = $(this).closest('tr').find('.delete-task').data('task-id');
+                var taskName = $(this).closest('tr').find('td:first-child').text().trim();
+                var taskStartDate = $(this).closest('tr').find('td:nth-child(2)').text().trim();
+                var taskCategory = $(this).closest('tr').find('td:nth-child(4)').text().trim();
+                var taskDescription = $(this).closest('tr').find('td:nth-child(5)').text().trim();
+
+                $('#modify-task-title').val(taskName);
+                $('#modify-task-start-date').val(taskStartDate).trigger('change');;
+                $('#modify-task-category').val(categoryIds[taskCategory]);
+                $('#modify-task-description').val(taskDescription);
+
+                $('#modifyTaskBtn').data('task-id', taskId);
+
+            });
+
+            $(document).on('click', '#modifyTaskBtn', function () {
+                var taskId = $(this).data('task-id');
+                var modifiedTitle = $('#modify-task-title').val();
+                var modifiedStartDate = $('#modify-task-start-date').val();
+                var modifiedCategory = $('#modify-task-category').val();
+                var modifiedDescription = $('#modify-task-description').val();
+
+                if (!modifiedTitle || !modifiedStartDate || !modifiedCategory) {
+                    alert('Tous les champs avec * sont obligatoires');
+                    return;
+                }
+
+                $.ajax({
+                    url: 'modifyTask.php',
+                    type: 'POST',
+                    data: {
+                        taskId: taskId,
+                        modifiedTitle: modifiedTitle,
+                        modifiedStartDate: modifiedStartDate,
+                        modifiedCategory: modifiedCategory,
+                        modifiedDescription: modifiedDescription
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success == true) {
+                            fetchTasks(); 
+                            $('#modifyTaskModal').modal('hide');
+                            alert('La tâche a été modifiée avec succès!');
+                        } else {
+                            console.log("Modify task failed, " + response.message);
+                        }
+                    }
+                });
+            });
 
         });
     </script>
