@@ -290,16 +290,16 @@ $categories->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                             <tr>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${categoryName}
                                 </td>
                                 <td style="word-wrap: break-word; max-width: 300px;">
@@ -369,16 +369,16 @@ $categories->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                                 <tr>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${categoryName}
                                 </td>
                                 <td style="word-wrap: break-word; max-width: 300px;">

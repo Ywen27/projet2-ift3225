@@ -303,18 +303,19 @@ $users->data_seek(0);
             });
 
             var categoryNames = <?php echo json_encode($categoryNames); ?>;
+            var userNames = <?php echo json_encode($userNames); ?>;
             // Fetch tasks from the server
             function fetchTasks() {
                 $.ajax({
-                    url: 'fetchAllTasks.php',
+                    url: 'fetchAllTasksAdmin.php',
                     type: 'GET',
                     dataType: "json",
                     success: function (response) {
                         if (response.success == true) {
                             var tasks = response.tasks;
                             var tasksHtml = '';
-
                             tasks.forEach(function (task) {
+                                var userName = userNames[task.user_id]
                                 var categoryName = categoryNames[task.categorie_id];
                                 var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` :
                                     `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
@@ -322,19 +323,22 @@ $users->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                             <tr>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td  class="text-truncate" style="max-width: 150px;">
+                                    ${userName}
+                                </td>
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${categoryName}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 300px;">
+                                <td style="word-wrap: break-word; max-width: 250px;">
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
@@ -351,7 +355,7 @@ $users->data_seek(0);
 
                             $('#listeTaches').html(tasksHtml);
                             if (tasks.length == 0) {
-                                $('#noTasks').text("Vous avez aucune tâche pour l'instant.");
+                                $('#noTasks').text("Il n'y aucune tâche dans le système pour l'instant.");
                             } else {
                                 $('#noTasks').text("");
                             }
@@ -366,21 +370,23 @@ $users->data_seek(0);
             $('#filterForm').on('submit', function (e) {
                 e.preventDefault();
 
+                var filterUserId = userIds[$('filter-username').val];
                 var filterTitle = $('#filter-title').val();
                 var filterStartDate = $('#filter-start-date').val();
                 var filterEndDate = $('#filter-end-date').val();
                 var filterCategory = $('#filter-category').val();
                 var filterState = $('#filter-state').val();
 
-                if (!filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
+                if (!filterUserId && !filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
                     alert('Veuillez remplir au moins un champ pour le filtrage!');
                     return;
                 }
 
                 $.ajax({
-                    url: 'filterTask.php',
+                    url: 'filterTaskAdmin.php',
                     type: 'POST',
                     data: {
+                        filterUserId: filterUserId,
                         filterTitle: filterTitle,
                         filterStartDate: filterStartDate,
                         filterEndDate: filterEndDate,
@@ -394,6 +400,7 @@ $users->data_seek(0);
                             var tasksHtml = '';
 
                             tasks.forEach(function (task) {
+                                var userName = userNames[task.user_id]
                                 var categoryName = categoryNames[task.categorie_id];
                                 var finishButtonHtml = task.etat === 'complete' ? `&nbsp;&nbsp;<span style="font-size: 25px;" title="Tâche complétée">&#9989;</span>` :
                                     `<button type="button" class="btn btn-success finish-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
@@ -401,19 +408,22 @@ $users->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                                 <tr>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td  class="text-truncate" style="max-width: 150px;">
+                                    ${userName}
+                                </td>
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td style=" word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 100px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 150px;">
+                                <td class="text-truncate" style="max-width: 100px;">
                                     ${categoryName}
                                 </td>
-                                <td style="word-wrap: break-word; max-width: 300px;">
+                                <td style="word-wrap: break-word; max-width: 250px;">
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
