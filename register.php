@@ -1,8 +1,12 @@
-<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
-
+<?php if (isset($_GET['source']))
+    die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
+
+$usernameError = '';
+$emailError = '';
+$generalError = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -10,16 +14,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     // Requête pour vérifier si le nom d'utilisateur existe déjà
-    $check_sql = "SELECT * FROM users WHERE email = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param('s', $email);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
+    $check_username_sql = "SELECT * FROM users WHERE username = ?";
+    $check_username_stmt = $conn->prepare($check_username_sql);
+    $check_username_stmt->bind_param('s', $username);
+    $check_username_stmt->execute();
+    $check_username_result = $check_username_stmt->get_result();
 
-    if ($check_result->num_rows > 0) {
-        // L'email existe déjà
-        $error = 'Cet email est déjà associé à un compte';
-    } else {
+    // Requête pour vérifier si l'email existe déjà
+    $check_email_sql = "SELECT * FROM users WHERE email = ?";
+    $check_email_stmt = $conn->prepare($check_email_sql);
+    $check_email_stmt->bind_param('s', $email);
+    $check_email_stmt->execute();
+    $check_email_result = $check_email_stmt->get_result();
+
+    if ($check_username_result->num_rows > 0) {
+        $usernameError = 'Le nom d\'utilisateur existe déjà.';
+    }
+    if ($check_email_result->num_rows > 0) {
+        $emailError = 'Cet email est déjà associé à un compte.';
+    }
+    if (empty($usernameError) && empty($emailError)) {
+        // Les données sont valides, procéder à l'insertion dans la base de données
+
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Requête pour insérer le nouvel utilisateur dans la base de données
@@ -40,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Inscription</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -47,12 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             background-color: #f2f2f2;
         }
+
         .container {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
         }
+
         .register-form {
             max-width: 400px;
             width: 100%;
@@ -61,15 +80,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
         }
+
         button[type="submit"] {
             font-weight: bold;
             text-transform: uppercase;
         }
+
         p {
             text-align: center;
             color: #666;
@@ -78,25 +100,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="register-form">
             <h1>Inscription</h1>
-            <?php if (isset($error)): ?>
-            <p style="color: red;"><?php echo $error; ?></p>
-            <?php endif; ?>
             <form method="post" action="register.php">
                 <div class="form-group">
                     <label for="username">Nom d'utilisateur:</label>
-                    <input type="text" id="username" name="username" class="form-control" required>
+                    <input type="text" id="username" name="username" class="form-control" required
+                        value="<?php echo isset($username) ? $username : ''; ?>">
+                    <?php if (!empty($usernameError)): ?>
+                        <p style="color: red;">
+                            <?php echo $usernameError; ?>
+                        </p>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
+                    <input type="email" id="email" name="email" class="form-control" required
+                        value="<?php echo isset($email) ? $email : ''; ?>">
+                    <?php if (!empty($emailError)): ?>
+                        <p style="color: red;">
+                            <?php echo $emailError; ?>
+                        </p>
+                    <?php endif; ?>
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe:</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" required
+                        value="<?php echo isset($password) ? $password : ''; ?>">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
             </form>
@@ -105,6 +138,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </body>
+
 </html>
-
-

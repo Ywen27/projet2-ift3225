@@ -21,8 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-        header('Location: dashboard.php');
-        exit;
+        if($_SESSION['role'] == 'user'){
+            header('Location: dashboard.php');
+            exit;
+        }else{
+            header('Location: dashboardAdmin.php');
+            exit;
+        }
+        
     } else {
         // Le mot de passe est incorrect, affichez une erreur
         $error = 'Le nom d\'utilisateur ou le mot de passe est incorrect';
