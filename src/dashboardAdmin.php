@@ -196,7 +196,7 @@ $users->data_seek(0);
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="newTaskModalLabel">Modifier la tâche</h5>
+                        <h5 class="modal-title" id="modifyTaskModalLabel">Modifier la tâche</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -378,7 +378,12 @@ $users->data_seek(0);
                 var filterCategory = $('#filter-category').val();
                 var filterState = $('#filter-state').val();
 
-                if (!filterUserId && !filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
+                if(!filterUserId){
+                    alert('Le nom d\'utilisateur entré n\'existe pas.');
+                    return;
+                }
+
+                if (!filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
                     alert('Veuillez remplir au moins un champ pour le filtrage!');
                     return;
                 }
