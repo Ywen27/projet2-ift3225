@@ -323,19 +323,19 @@ $users->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                             <tr>
-                                <td  class="text-truncate" style="max-width: 150px;">
+                                <td style="word-wrap: break-word; max-width: 150px;">
                                     ${userName}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${categoryName}
                                 </td>
                                 <td style="word-wrap: break-word; max-width: 250px;">
@@ -370,7 +370,7 @@ $users->data_seek(0);
             $('#filterForm').on('submit', function (e) {
                 e.preventDefault();
 
-                var filterUserId = userIds[$('filter-username').val];
+                var filterUserId = userIds[$('#filter-username').val];
                 var filterTitle = $('#filter-title').val();
                 var filterStartDate = $('#filter-start-date').val();
                 var filterEndDate = $('#filter-end-date').val();
@@ -408,19 +408,19 @@ $users->data_seek(0);
                                 </button>`;
                                 tasksHtml += `
                                 <tr>
-                                <td  class="text-truncate" style="max-width: 150px;">
+                                <td style="word-wrap: break-word; max-width: 150px;">
                                     ${userName}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.nom_tache}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.date_debut}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${task.date_fin ? task.date_fin : '-'}
                                 </td>
-                                <td class="text-truncate" style="max-width: 100px;">
+                                <td style="word-wrap: break-word; max-width: 100px;">
                                     ${categoryName}
                                 </td>
                                 <td style="word-wrap: break-word; max-width: 250px;">
