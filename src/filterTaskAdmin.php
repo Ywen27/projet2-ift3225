@@ -12,25 +12,31 @@ if ( isset($_POST['filterUserId']) || isset($_POST['filterTitle']) || isset($_PO
     $category = isset($_POST['filterCategory']) ? $_POST['filterCategory'] : '';
     $state = isset($_POST['filterState']) ? $_POST['filterState'] : '';
 
-    $sql = "SELECT * FROM taches WHERE user_id = {$_SESSION['user_id']}";
+    $sql = "SELECT * FROM taches";
+
+    $filters = [];
 
     if ($userId != '') {
-        $sql .= " AND user_id = $userId";
+        $filters[] = "user_id = $userId";
     }
     if ($title != '') {
-        $sql .= " AND nom_tache LIKE '%$title%'";
+        $filters[] = "nom_tache LIKE '%$title%'";
     }
     if ($startDate != '') {
-        $sql .= " AND date_debut = '$startDate'";
+        $filters[] = "date_debut = '$startDate'";
     }
     if ($endDate != '') {
-        $sql .= " AND date_fin = '$endDate'";
+        $filters[] = "date_fin = '$endDate'";
     }
     if ($category != '') {
-        $sql .= " AND categorie_id = $category";
+        $filters[] = "categorie_id = $category";
     }
     if ($state != '') {
-        $sql .= " AND etat = '$state'";
+        $filters[] = "etat = '$state'";
+    }
+    
+    if (!empty($filters)) {
+        $sql .= " WHERE " . implode(" AND ", $filters);
     }
 
     $result = $conn->query($sql);

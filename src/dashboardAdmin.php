@@ -368,22 +368,18 @@ $users->data_seek(0);
 
 
             var userIds = <?php echo json_encode($userIds); ?>;
+            
             $('#filterForm').on('submit', function (e) {
                 e.preventDefault();
 
-                var filterUserId = userIds[$('#filter-username').val];
+                var filterUserId = userIds[$('#filter-username').val()];
                 var filterTitle = $('#filter-title').val();
                 var filterStartDate = $('#filter-start-date').val();
                 var filterEndDate = $('#filter-end-date').val();
                 var filterCategory = $('#filter-category').val();
                 var filterState = $('#filter-state').val();
 
-                if(!filterUserId){
-                    alert('Le nom d\'utilisateur entré n\'existe pas.');
-                    return;
-                }
-
-                if (!filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
+                if(!filterUserId && !filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
                     alert('Veuillez remplir au moins un champ pour le filtrage!');
                     return;
                 }
@@ -507,10 +503,10 @@ $users->data_seek(0);
             var categoryIds = <?php echo json_encode($categoryIds); ?>;
             $(document).on('click', '.btn-primary[data-target="#modifyTaskModal"]', function () {
                 var taskId = $(this).closest('tr').find('.delete-task').data('task-id');
-                var taskName = $(this).closest('tr').find('td:first-child').text().trim();
-                var taskStartDate = $(this).closest('tr').find('td:nth-child(2)').text().trim();
-                var taskCategory = $(this).closest('tr').find('td:nth-child(4)').text().trim();
-                var taskDescription = $(this).closest('tr').find('td:nth-child(5)').text().trim();
+                var taskName = $(this).closest('tr').find('td:nth-child(2)').text().trim();
+                var taskStartDate = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+                var taskCategory = $(this).closest('tr').find('td:nth-child(5)').text().trim();
+                var taskDescription = $(this).closest('tr').find('td:nth-child(6)').text().trim();
 
                 $('#modify-task-title').val(taskName);
                 $('#modify-task-start-date').val(taskStartDate).trigger('change');;
