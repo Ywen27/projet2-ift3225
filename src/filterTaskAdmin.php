@@ -1,10 +1,11 @@
-<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source']))
+    die(highlight_file(__FILE__, 1));
 session_start();
 include('connectionDB.php');
 
 $response = array('success' => false, "message" => "", "tasks" => array());
 
-if ( isset($_POST['filterUserId']) || isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_POST['filterEndDate']) || isset($_POST['filterCategory']) || isset($_POST['filterState'])) {
+if (isset($_POST['filterUserId']) || isset($_POST['filterTitle']) || isset($_POST['filterStartDate']) || isset($_POST['filterEndDate']) || isset($_POST['filterCategory']) || isset($_POST['filterState'])) {
     $userId = isset($_POST['filterUserId']) ? $_POST['filterUserId'] : '';
     $title = isset($_POST['filterTitle']) ? $_POST['filterTitle'] : '';
     $startDate = isset($_POST['filterStartDate']) ? $_POST['filterStartDate'] : '';
@@ -12,7 +13,7 @@ if ( isset($_POST['filterUserId']) || isset($_POST['filterTitle']) || isset($_PO
     $category = isset($_POST['filterCategory']) ? $_POST['filterCategory'] : '';
     $state = isset($_POST['filterState']) ? $_POST['filterState'] : '';
 
-    $sql = "SELECT * FROM taches";
+    $sql = "SELECT * FROM taches ";
 
     $filters = [];
 
@@ -34,7 +35,7 @@ if ( isset($_POST['filterUserId']) || isset($_POST['filterTitle']) || isset($_PO
     if ($state != '') {
         $filters[] = "etat = '$state'";
     }
-    
+
     if (!empty($filters)) {
         $sql .= " WHERE " . implode(" AND ", $filters);
     }

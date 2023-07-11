@@ -1,4 +1,5 @@
-<?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1));
+<?php if (isset($_GET['source']))
+    die(highlight_file(__FILE__, 1));
 session_start();
 
 include('connectionDB.php');
@@ -153,7 +154,15 @@ $users->data_seek(0);
                         <form id="newTaskForm" method="post" action="createTaskAdmin.php">
                             <div class="form-group">
                                 <label for="task-username" class="col-form-label">Nom d'utilisateur*:</label>
-                                <input type="email" class="form-control" id="task-username" name="task-username">
+                                <select class="form-control" id="task-username" name="task-username">
+                                    <option value=""></option>
+                                    <?php
+                                    while ($row = $users->fetch_assoc()) {
+                                        echo '<option value="' . $row['user_id'] . '">' . $row['username'] . '</option>';
+                                    }
+                                    $categories->data_seek(0);
+                                    ?>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="task-title" class="col-form-label">Titre*:</label>
@@ -244,9 +253,12 @@ $users->data_seek(0);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <script>
         $(document).ready(function () {
             fetchTasks();
+
+            $('.selectpicker').selectpicker();
 
             $('#createTaskBtn').click(function (e) {
                 e.preventDefault();
@@ -259,17 +271,17 @@ $users->data_seek(0);
                 $('#filterForm').trigger('reset');
             });
 
-            var userIds = <?php echo json_encode($userIds); ?>;
+
             $('#newTaskForm').on('submit', function (e) {
                 e.preventDefault();
 
-                var userId = userIds[$('#task-username').val()]
+                var userId = $('#task-username').val();
                 var title = $('#task-title').val();
                 var startDate = $('#task-start-date').val();
                 var category = $('#task-category').val();
                 var description = $('#task-description').val();
 
-                if(!userId){
+                if (!userId) {
                     alert('Le nom d\'utilisateur n\'existe pas!');
                     return;
                 }
@@ -366,12 +378,9 @@ $users->data_seek(0);
                 });
             }
 
-
             var userIds = <?php echo json_encode($userIds); ?>;
-            
             $('#filterForm').on('submit', function (e) {
                 e.preventDefault();
-
                 var filterUserId = userIds[$('#filter-username').val()];
                 var filterTitle = $('#filter-title').val();
                 var filterStartDate = $('#filter-start-date').val();
@@ -379,9 +388,14 @@ $users->data_seek(0);
                 var filterCategory = $('#filter-category').val();
                 var filterState = $('#filter-state').val();
 
-                if(!filterUserId && !filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
-                    alert('Veuillez remplir au moins un champ pour le filtrage!');
-                    return;
+                if (!filterTitle && !filterStartDate && !filterEndDate && !filterCategory && !filterState) {
+                    if(! $('#filter-username').val()){
+                        alert('Veuillez remplir au moins un champ pour le filtrage!');
+                        return;
+                    }else if(!filterUserId){
+                        alert('Le nom d\'utilisateur existe pas!');
+                        return;
+                    }
                 }
 
                 $.ajax({
@@ -542,7 +556,7 @@ $users->data_seek(0);
                     dataType: "json",
                     success: function (response) {
                         if (response.success == true) {
-                            fetchTasks(); 
+                            fetchTasks();
                             $('#modifyTaskModal').modal('hide');
                             alert('La tâche a été modifiée avec succès!');
                         } else {
