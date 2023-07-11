@@ -87,11 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="post" action="login.php">
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
+                    <input type="email" id="email" name="email" class="form-control" required
+                        value="<?php echo isset($email) ? $email : ''; ?>">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe:</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" required
+                        value="<?php echo isset($password) ? $password : ''; ?>">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
             </form>

@@ -367,6 +367,7 @@ $users->data_seek(0);
             }
 
 
+            var userIds = <?php echo json_encode($userIds); ?>;
             $('#filterForm').on('submit', function (e) {
                 e.preventDefault();
 
