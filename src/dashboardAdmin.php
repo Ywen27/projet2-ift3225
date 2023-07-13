@@ -390,7 +390,7 @@ $users->data_seek(0);
                         alert('Veuillez remplir au moins un champ pour le filtrage!');
                         return;
                     }else if(!filterUserId){
-                        alert('Le nom d\'utilisateur existe pas!');
+                        alert('Le nom d\'utilisateur n\'existe pas!');
                         return;
                     }
                 }
