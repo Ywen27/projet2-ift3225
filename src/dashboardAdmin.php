@@ -440,7 +440,7 @@ $users->data_seek(0);
                                     ${task.description ? task.description : '-'}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newTaskModal">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyTaskModal">
                                         Modifier
                                     </button>
                                     <button type="button" class="btn btn-danger delete-task" data-task-id="${task.tache_id}" data-task-name="${task.nom_tache}">
